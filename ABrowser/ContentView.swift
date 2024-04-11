@@ -139,17 +139,6 @@ struct ContentView: View, Hashable {
         .onAppear() {
             webView.loadURL(urlString)
         }
-        .onDrop(of: [.fileURL], isTargeted: nil) { providers in
-            if let provider = providers.first(where: { $0.canLoadObject(ofClass: URL.self) } ) {
-                let _ = provider.loadObject(ofClass: URL.self) { object, error in
-                    if let url = object {
-                        webView.loadURL(url.absoluteString)
-                    }
-                }
-                return true
-            }
-            return false
-        }
     }
 }
 #Preview {
@@ -176,8 +165,8 @@ struct WebView: NSViewRepresentable, Hashable {
     }
     
     func updateNSView(_ nsView: WKWebView, context: Context) {
-        if let url = nsView.url {
-            print(url.absoluteString)
+        if let url = webView.url {
+            urlString = url.absoluteString
         }
     }
     
